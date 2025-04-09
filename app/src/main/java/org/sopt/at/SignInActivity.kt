@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +56,8 @@ class SignInActivity : ComponentActivity() {
 fun SignInView(
     modifier: Modifier = Modifier
 ) {
+    var loginValue by remember { mutableStateOf("") }
+    var passwordValue by remember { mutableStateOf("") }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -57,13 +65,18 @@ fun SignInView(
             .padding(16.dp, 16.dp)
     ) {
         TobBar()
-        Spacer(modifier.height(32.dp))
+        Spacer(Modifier.height(32.dp))
         Title()
-        Spacer(modifier.height(16.dp))
-        InputField(isLogin = true)
-        Spacer(modifier.height(8.dp))
-        InputField()
-        Spacer(modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
+        InputField(value = loginValue, onValueChange = { loginValue = it }, placeholder = "아이디")
+        Spacer(Modifier.height(8.dp))
+        InputField(
+            value = passwordValue,
+            onValueChange = { passwordValue = it },
+            placeholder = "비밀번호",
+            isPassword = true,
+        )
+        Spacer(Modifier.height(16.dp))
         LoginButton()
     }
 }
@@ -79,27 +92,53 @@ fun Title() {
 
 @Composable
 fun InputField(
-    isLogin: Boolean = false
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    isPassword: Boolean = false,
 ) {
-    var loginValue by remember { mutableStateOf("") }
-    var passwordValue by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    val visualTransformation = when {
+        isPassword && !passwordVisible -> PasswordVisualTransformation()
+        else -> VisualTransformation.None
+    }
+
     TextField(
-        modifier = Modifier.fillMaxWidth().background(color = Color.Gray),
-        value = if (isLogin) {
-            loginValue
-        } else {
-            passwordValue
+        modifier = Modifier.fillMaxWidth(),
+        value = value,
+        onValueChange = onValueChange,
+        visualTransformation = visualTransformation,
+        placeholder = {
+            Text(text = placeholder)
         },
-        onValueChange = if (isLogin) {
-            { loginValue = it }
-        } else {
-            { passwordValue = it }
-        },
-        visualTransformation = if(isLogin) {
-            VisualTransformation.None
-        } else {
-            PasswordVisualTransformation()
-        },
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Color.LightGray,
+            unfocusedTextColor = Color.LightGray,
+            unfocusedContainerColor = Color(0xFF2C2C2C),
+            focusedContainerColor = Color(0xFF2C2C2C),
+            cursorColor = Color.LightGray,
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+        trailingIcon = {
+            if (isPassword) {
+                val icon = if (passwordVisible) {
+                    Icons.Default.Notifications
+                } else {
+                    Icons.Default.Call
+                }
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = if (passwordVisible) "비밀번호 숨기기" else "비밀번호 보기",
+                        tint = Color.White.copy(alpha = 0.6f)
+                    )
+                }
+            }
+        }
     )
 }
 
