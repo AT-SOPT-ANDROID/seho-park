@@ -1,9 +1,6 @@
 package org.sopt.at.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,8 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import org.sopt.at.R
 
 @Composable
 fun InputField(
@@ -32,6 +31,8 @@ fun InputField(
         isPassword && !passwordVisible -> PasswordVisualTransformation()
         else -> VisualTransformation.None
     }
+
+    val icon = R.drawable.visibility_off
 
     TextField(
         modifier = Modifier.fillMaxWidth(),
@@ -53,15 +54,9 @@ fun InputField(
         ),
         trailingIcon = {
             if (isPassword) {
-                val icon = if (passwordVisible) {
-                    Icons.Default.Notifications
-                } else {
-                    Icons.Default.Call
-                }
-
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
-                        imageVector = icon,
+                        painter = painterResource(icon),
                         contentDescription = if (passwordVisible) "비밀번호 숨기기" else "비밀번호 보기",
                         tint = Color.White.copy(alpha = 0.6f)
                     )
