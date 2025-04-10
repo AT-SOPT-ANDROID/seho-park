@@ -1,5 +1,6 @@
 package org.sopt.at.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,5 +35,26 @@ fun LoginButton(modifier: Modifier = Modifier, isEnabled: Boolean = false) {
             fontWeight = FontWeight.Bold,
             color = if (isEnabled) Color.White else Color.Gray
         )
+    }
+}
+
+@Composable
+fun SignUpButton(modifier: Modifier = Modifier, enabled: Boolean = false, onClick: () -> Unit) {
+    Button(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(52.dp)
+            .border(
+                width = 1.dp,
+                color = Color.White,
+                shape = RoundedCornerShape(4.dp)
+            ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Black,
+        ),
+        enabled = enabled,
+        onClick = onClick
+    ) {
+        Text(text = "다음", color = Color.White)
     }
 }

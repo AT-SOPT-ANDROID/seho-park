@@ -1,6 +1,7 @@
 package org.sopt.at.components
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +14,7 @@ fun TobBar(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         Icon(
             painter = painterResource(id = R.drawable.arrow_back),

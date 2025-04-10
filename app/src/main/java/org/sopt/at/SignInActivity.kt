@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.components.InputField
 import org.sopt.at.components.LoginButton
+import org.sopt.at.components.Title
 import org.sopt.at.components.TobBar
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
@@ -44,7 +44,10 @@ class SignInActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Black,
+                ) { innerPadding ->
                     SignInView(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -68,7 +71,7 @@ fun SignInView(
     ) {
         TobBar()
         Spacer(Modifier.height(48.dp))
-        Title()
+        Title(text = "TIVING ID 로그인")
         Spacer(Modifier.height(24.dp))
         InputField(value = loginValue, onValueChange = { loginValue = it }, placeholder = "아이디")
         Spacer(Modifier.height(12.dp))
@@ -87,15 +90,6 @@ fun SignInView(
     }
 }
 
-@Composable
-fun Title() {
-    Text(
-        text = "TIVING ID 로그인",
-        color = Color.White,
-        fontSize = 28.sp,
-        fontWeight = FontWeight.SemiBold
-    )
-}
 
 @Composable
 fun AuthFooter() {

@@ -3,6 +3,7 @@ package org.sopt.at.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -32,9 +33,9 @@ fun InputField(
         else -> VisualTransformation.None
     }
 
-    val icon = R.drawable.visibility_off
+    val icon = if(passwordVisible) R.drawable.visibility else R.drawable.visibility_off
 
-    TextField(
+    OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
@@ -43,13 +44,13 @@ fun InputField(
             Text(text = placeholder)
         },
         colors = TextFieldDefaults.colors(
-            focusedTextColor = Color.LightGray,
-            unfocusedTextColor = Color.LightGray,
+            focusedTextColor = Color.Gray,
+            unfocusedTextColor = Color.Gray,
             unfocusedContainerColor = Color(0xFF2C2C2C),
             focusedContainerColor = Color(0xFF2C2C2C),
             cursorColor = Color.LightGray,
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.White,
             disabledIndicatorColor = Color.Transparent
         ),
         trailingIcon = {
