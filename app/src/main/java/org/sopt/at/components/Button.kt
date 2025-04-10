@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginButton(modifier: Modifier = Modifier, isEnabled: Boolean = false) {
+fun LoginButton(modifier: Modifier = Modifier, isEnabled: Boolean = false, onClick: () -> Unit) {
     Button(
         modifier = modifier
             .fillMaxWidth()
             .height(52.dp),
-        onClick = {},
+        onClick = onClick,
         enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFFF153C),

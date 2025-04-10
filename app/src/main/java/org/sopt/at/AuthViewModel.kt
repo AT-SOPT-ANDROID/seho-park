@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class SignUpViewModel : ViewModel() {
+class AuthViewModel : ViewModel() {
     var inputId by mutableStateOf("")
         private set
 

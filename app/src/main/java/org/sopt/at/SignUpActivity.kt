@@ -19,7 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.components.InputField
@@ -40,7 +39,7 @@ class SignUpActivity : ComponentActivity() {
                 ) { innerPadding ->
                     SignUpScreen(
                         modifier = Modifier.padding(innerPadding),
-                        viewModel = SignUpViewModel(),
+                        viewModel = AuthViewModel(),
                         onNavigateToSignIn = {
                             startActivity(Intent(this, SignInActivity::class.java))
                             finish()
@@ -54,7 +53,7 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier, viewModel: SignUpViewModel, onNavigateToSignIn: () -> Unit
+    modifier: Modifier, viewModel: AuthViewModel, onNavigateToSignIn: () -> Unit
 ) {
     var inputId = viewModel.inputId
     var inputPw = viewModel.inputPw
