@@ -1,8 +1,8 @@
 package org.sopt.at
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.components.InputField
@@ -46,7 +47,7 @@ class SignUpActivity : ComponentActivity() {
                                 putExtra("id", id)
                                 putExtra("pw", pw)
                             }
-                            setResult(Activity.RESULT_OK, resultIntent)
+                            setResult(RESULT_OK, resultIntent)
                             finish()
                         }
                     )
@@ -58,7 +59,9 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier, viewModel: AuthViewModel, onNavigateToSignIn: (id: String, pw: String) -> Unit
+    modifier: Modifier,
+    viewModel: AuthViewModel,
+    onNavigateToSignIn: (id: String, pw: String) -> Unit
 ) {
     val inputId = viewModel.inputId
     val inputPw = viewModel.inputPw
@@ -66,6 +69,7 @@ fun SignUpScreen(
     val isPwValid = viewModel.isPwValid
     val isPasswdScreen = viewModel.isPasswordScreen
     val navigateToSignIn by viewModel.navigateToSignIn.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(navigateToSignIn) {
         if (navigateToSignIn) {
@@ -94,8 +98,16 @@ fun SignUpScreen(
         }
         Spacer(modifier = modifier.weight(1f))
         SignUpButton(
-            enabled = if (isPasswdScreen) isPwValid else isIdValid,
-            onClick = viewModel::onScreenChange
+            enabled = if (isPasswdScreen) inputPw.isNotEmpty() else inputId.isNotEmpty(),
+            onClick = {
+                if (isPasswdScreen && !isPwValid) {
+                    Toast.makeText(context, "유효하지 않은 패스워드 입니다", Toast.LENGTH_SHORT).show()
+                } else if (!isPasswdScreen && !isIdValid) {
+                    Toast.makeText(context, "유효하지 않은 아이디입니다", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.onScreenChange()
+                }
+            }
         )
     }
 }
@@ -142,12 +154,3 @@ fun PwView(modifier: Modifier = Modifier, inputPw: String, onValueChange: (Strin
     Spacer(modifier = modifier.height(8.dp))
     HintText(text = "영문, 숫자, 특수문자(~!@#$$%^&*) 조합 8~15자리")
 }
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    ATSOPTANDROIDTheme {
-//        SignUpScreen(modifier = Modifier, viewModel = SignUpViewModel())
-//    }
-//}

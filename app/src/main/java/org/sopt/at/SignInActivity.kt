@@ -1,9 +1,7 @@
 package org.sopt.at
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,13 +18,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.sopt.at.components.InputField
 import org.sopt.at.components.LoginButton
 import org.sopt.at.components.Title
@@ -49,18 +52,16 @@ class SignInActivity : ComponentActivity() {
         var passwordValue by mutableStateOf("")
         var id by mutableStateOf("")
         var pw by mutableStateOf("")
-
+        val snackbarHostState = SnackbarHostState()
 
         val signUpLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 val returnedId = result.data?.getStringExtra("id") ?: ""
                 val returnedPw = result.data?.getStringExtra("pw") ?: ""
                 id = returnedId
                 pw = returnedPw
-
-                Toast.makeText(this, "회원가입 완료! 아이디 자동 입력됨", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -69,6 +70,7 @@ class SignInActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     containerColor = Color.Black,
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
                 ) { innerPadding ->
                     SignInView(
                         modifier = Modifier.padding(innerPadding),
@@ -76,16 +78,12 @@ class SignInActivity : ComponentActivity() {
                         passwordValue = passwordValue,
                         onLoginValueChange = { loginValue = it },
                         onPasswordValueChange = { passwordValue = it },
-                        onLoginClick = {
-                            if (loginValue == id && passwordValue == pw) {
-                                Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(this, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
-                            }
-                        },
                         onSignUpClick = {
                             signUpLauncher.launch(Intent(this, SignUpActivity::class.java))
-                        }
+                        },
+                        snackbarHostState = snackbarHostState,
+                        id = id,
+                        pw = pw
                     )
                 }
             }
@@ -100,9 +98,14 @@ fun SignInView(
     passwordValue: String,
     onLoginValueChange: (String) -> Unit,
     onPasswordValueChange: (String) -> Unit,
-    onLoginClick: () -> Unit,
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    id: String,
+    pw: String
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .background(color = Color.Black)
@@ -123,7 +126,18 @@ fun SignInView(
         )
         Spacer(Modifier.height(24.dp))
         LoginButton(
-            onClick = onLoginClick,
+            onClick = {
+                if (loginValue == id && passwordValue == pw) {
+                    val intent = Intent(context, MyPageActivity::class.java).apply {
+                        putExtra("id", loginValue)
+                    }
+                    context.startActivity(intent)
+                } else {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("아이디 또는 비밀번호가 일치하지 않습니다")
+                    }
+                }
+            },
             isEnabled = loginValue.isNotEmpty() && passwordValue.isNotEmpty()
         )
         Spacer(Modifier.height(32.dp))
@@ -200,16 +214,3 @@ fun TermsText(
         },
     )
 }
-
-
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun SignInPreview() {
-//    ATSOPTANDROIDTheme {
-//        SignInView(
-//            o
-//            onSignUpClick = {},
-//        )
-//    }
-//}
