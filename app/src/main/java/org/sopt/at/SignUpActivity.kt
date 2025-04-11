@@ -1,5 +1,6 @@
 package org.sopt.at
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -40,8 +41,12 @@ class SignUpActivity : ComponentActivity() {
                     SignUpScreen(
                         modifier = Modifier.padding(innerPadding),
                         viewModel = AuthViewModel(),
-                        onNavigateToSignIn = {
-                            startActivity(Intent(this, SignInActivity::class.java))
+                        onNavigateToSignIn = { id, pw ->
+                            val resultIntent = Intent().apply {
+                                putExtra("id", id)
+                                putExtra("pw", pw)
+                            }
+                            setResult(Activity.RESULT_OK, resultIntent)
                             finish()
                         }
                     )
@@ -53,10 +58,10 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier, viewModel: AuthViewModel, onNavigateToSignIn: () -> Unit
+    modifier: Modifier, viewModel: AuthViewModel, onNavigateToSignIn: (id: String, pw: String) -> Unit
 ) {
-    var inputId = viewModel.inputId
-    var inputPw = viewModel.inputPw
+    val inputId = viewModel.inputId
+    val inputPw = viewModel.inputPw
     val isIdValid = viewModel.isIdValid
     val isPwValid = viewModel.isPwValid
     val isPasswdScreen = viewModel.isPasswordScreen
@@ -64,7 +69,7 @@ fun SignUpScreen(
 
     LaunchedEffect(navigateToSignIn) {
         if (navigateToSignIn) {
-            onNavigateToSignIn()
+            onNavigateToSignIn(viewModel.inputId, viewModel.inputPw)
             viewModel.onNavigated()
         }
     }

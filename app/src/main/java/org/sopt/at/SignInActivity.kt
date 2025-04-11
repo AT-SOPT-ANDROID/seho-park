@@ -1,12 +1,13 @@
 package org.sopt.at
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,14 +41,29 @@ import org.sopt.at.components.TobBar
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
 class SignInActivity : ComponentActivity() {
-    private val authViewModel: AuthViewModel by viewModels()
-
-    private var loginValue by mutableStateOf("")
-    private var passwordValue by mutableStateOf("")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        var loginValue by mutableStateOf("")
+        var passwordValue by mutableStateOf("")
+        var id by mutableStateOf("")
+        var pw by mutableStateOf("")
+
+
+        val signUpLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val returnedId = result.data?.getStringExtra("id") ?: ""
+                val returnedPw = result.data?.getStringExtra("pw") ?: ""
+                id = returnedId
+                pw = returnedPw
+
+                Toast.makeText(this, "회원가입 완료! 아이디 자동 입력됨", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(
@@ -61,15 +77,14 @@ class SignInActivity : ComponentActivity() {
                         onLoginValueChange = { loginValue = it },
                         onPasswordValueChange = { passwordValue = it },
                         onLoginClick = {
-                            if (loginValue == authViewModel.inputId && passwordValue == authViewModel.inputPw) {
+                            if (loginValue == id && passwordValue == pw) {
                                 Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(this, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT)
-                                    .show()
+                                Toast.makeText(this, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
                             }
                         },
                         onSignUpClick = {
-                            startActivity(Intent(this, SignUpActivity::class.java))
+                            signUpLauncher.launch(Intent(this, SignUpActivity::class.java))
                         }
                     )
                 }
@@ -109,7 +124,7 @@ fun SignInView(
         Spacer(Modifier.height(24.dp))
         LoginButton(
             onClick = onLoginClick,
-            isEnabled = loginValue.length > 0 && passwordValue.length > 0
+            isEnabled = loginValue.isNotEmpty() && passwordValue.isNotEmpty()
         )
         Spacer(Modifier.height(32.dp))
         AuthFooter(onSignUpClick = onSignUpClick)
