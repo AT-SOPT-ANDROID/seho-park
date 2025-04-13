@@ -1,0 +1,216 @@
+package org.sopt.at
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import org.sopt.at.components.InputField
+import org.sopt.at.components.LoginButton
+import org.sopt.at.components.Title
+import org.sopt.at.components.TobBar
+import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+
+class SignInActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        var loginValue by mutableStateOf("")
+        var passwordValue by mutableStateOf("")
+        var id by mutableStateOf("")
+        var pw by mutableStateOf("")
+        val snackbarHostState = SnackbarHostState()
+
+        val signUpLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val returnedId = result.data?.getStringExtra("id") ?: ""
+                val returnedPw = result.data?.getStringExtra("pw") ?: ""
+                id = returnedId
+                pw = returnedPw
+            }
+        }
+
+        setContent {
+            ATSOPTANDROIDTheme {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = Color.Black,
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                ) { innerPadding ->
+                    SignInView(
+                        modifier = Modifier.padding(innerPadding),
+                        loginValue = loginValue,
+                        passwordValue = passwordValue,
+                        onLoginValueChange = { loginValue = it },
+                        onPasswordValueChange = { passwordValue = it },
+                        onSignUpClick = {
+                            signUpLauncher.launch(Intent(this, SignUpActivity::class.java))
+                        },
+                        snackbarHostState = snackbarHostState,
+                        id = id,
+                        pw = pw
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SignInView(
+    modifier: Modifier = Modifier,
+    loginValue: String,
+    passwordValue: String,
+    onLoginValueChange: (String) -> Unit,
+    onPasswordValueChange: (String) -> Unit,
+    onSignUpClick: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    id: String,
+    pw: String
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier
+            .background(color = Color.Black)
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        TobBar()
+        Spacer(Modifier.height(48.dp))
+        Title(text = "TIVING ID 로그인")
+        Spacer(Modifier.height(24.dp))
+        InputField(value = loginValue, onValueChange = onLoginValueChange, placeholder = "아이디")
+        Spacer(Modifier.height(12.dp))
+        InputField(
+            value = passwordValue,
+            onValueChange = onPasswordValueChange,
+            placeholder = "비밀번호",
+            isPassword = true,
+        )
+        Spacer(Modifier.height(24.dp))
+        LoginButton(
+            onClick = {
+                if (loginValue == id && passwordValue == pw) {
+                    val intent = Intent(context, MyPageActivity::class.java).apply {
+                        putExtra("id", loginValue)
+                    }
+                    context.startActivity(intent)
+                } else {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("아이디 또는 비밀번호가 일치하지 않습니다")
+                    }
+                }
+            },
+            isEnabled = loginValue.isNotEmpty() && passwordValue.isNotEmpty()
+        )
+        Spacer(Modifier.height(32.dp))
+        AuthFooter(onSignUpClick = onSignUpClick)
+        Spacer(Modifier.height(32.dp))
+        TermsText()
+    }
+}
+
+
+@Composable
+fun AuthFooter(
+    onSignUpClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = "아이디 찾기",
+            color = Color.Gray,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = "|",
+            color = Color.Gray,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = "비밀번호 찾기",
+            color = Color.Gray,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = "|",
+            color = Color.Gray,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            modifier = Modifier.clickable {
+                onSignUpClick()
+            },
+            text = "회원가입",
+            color = Color.Gray,
+        )
+    }
+}
+
+@Composable
+fun TermsText(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        fontSize = 12.sp,
+        lineHeight = 20.sp,
+        color = Color.Gray,
+        text = buildAnnotatedString {
+            append("이 사이트는 Google reCAPTCHA로 보호되며,\n")
+
+            withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+                append("Google 개인정보 처리방침")
+            }
+
+            append("과 ")
+
+            withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+                append("서비스 약관")
+            }
+
+            append("이 적용됩니다.")
+        },
+    )
+}
