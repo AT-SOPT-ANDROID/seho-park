@@ -15,9 +15,9 @@ fun NavController.navigateToSignUp() {
 
 fun NavGraphBuilder.signUpNavGraph(
     padding: PaddingValues,
-    onNavigateToSignIn: () -> Unit,
+    onNavigateToSignIn: (String, String) -> Unit,
 ) {
-    composable<MainTabRoute.Home> {
+    composable<Route.SignUp> {
         SignUpRoute (
             padding = padding,
             navigateToSignIn = onNavigateToSignIn

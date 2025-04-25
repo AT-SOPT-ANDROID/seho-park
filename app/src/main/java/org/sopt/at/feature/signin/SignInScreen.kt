@@ -42,7 +42,7 @@ import org.sopt.at.ui.theme.BasicBlack
 fun SignInRoute(
     padding: PaddingValues,
     navigateToSignUp: () -> Unit,
-    navigateToHome: (id: String) -> Unit
+    navigateToHome: () -> Unit
 ) {
     var loginValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
@@ -76,7 +76,7 @@ fun SignInScreen(
     onLoginValueChange: (String) -> Unit,
     onPasswordValueChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
-    onLoginSuccess: (String) -> Unit,
+    onLoginSuccess: () -> Unit,
     snackbarHostState: SnackbarHostState,
     id: String,
     pw: String,
@@ -106,7 +106,7 @@ fun SignInScreen(
         LoginButton(
             onClick = {
                 if (loginValue == id && passwordValue == pw) {
-                    onLoginSuccess(loginValue)
+                    onLoginSuccess()
                 } else {
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar("아이디 또는 비밀번호가 일치하지 않습니다")

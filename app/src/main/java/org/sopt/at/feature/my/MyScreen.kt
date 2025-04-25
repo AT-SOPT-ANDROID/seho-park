@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.sopt.at.components.Title
 import org.sopt.at.components.TobBar
-import org.sopt.at.core.navigation.Route
 
 
 @Composable
@@ -24,7 +23,6 @@ fun MyRoute(
 ) {
     MyScreen(
         padding = padding,
-        onPostClick = navigateToHome,
     )
 }
 
@@ -32,7 +30,6 @@ fun MyRoute(
 fun MyScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    onPostClick: () -> Unit,
 ) {
     Column(
         modifier = modifier

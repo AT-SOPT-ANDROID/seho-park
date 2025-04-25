@@ -1,6 +1,7 @@
 package org.sopt.at.feature.home
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -19,10 +20,13 @@ fun HomeRoute(
     )
 }
 
+@Composable
 fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
     onPostClick: () -> Unit,
 ) {
-
+    Text(
+        text = "t",
+    )
 }

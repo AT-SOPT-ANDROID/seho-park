@@ -19,7 +19,7 @@ fun NavGraphBuilder.signInNavGraph(
     onNavigateToSignUp: () -> Unit,
     onNavigateToHome: () -> Unit,
 ) {
-    composable<MainTabRoute.Home> {
+    composable<Route.SignIn> {
         SignInRoute(
             padding = padding,
             navigateToSignUp = onNavigateToSignUp,

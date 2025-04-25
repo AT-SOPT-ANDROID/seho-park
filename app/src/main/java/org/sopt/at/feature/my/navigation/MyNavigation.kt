@@ -18,7 +18,7 @@ fun NavGraphBuilder.myNavGraph(
     padding: PaddingValues,
     onNavigateToHome: () -> Unit,
 ) {
-    composable<MainTabRoute.Home> {
+    composable<Route.My> {
         MyRoute(
             padding = padding,
             navigateToHome = onNavigateToHome,
