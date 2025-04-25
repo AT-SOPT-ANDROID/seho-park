@@ -8,40 +8,28 @@ import org.sopt.at.core.navigation.MainTabRoute
 import org.sopt.at.core.navigation.Route
 
 enum class MainTab(
-    @DrawableRes val defaultIconResId: Int,
-    @DrawableRes val selectIconResId: Int,
-    @StringRes val descriptionResId: Int,
+//    @DrawableRes val defaultIconResId: Int,
+//    @DrawableRes val selectIconResId: Int,
+//    @StringRes val descriptionResId: Int,
     val route: MainTabRoute,
 ) {
     HOME(
-        defaultIconResId = R.drawable.ic_home_default,
-        selectIconResId =  R.drawable.ic_home_select,
-        descriptionResId = R.string.bottom_navigation_bar_item_home,
-        route = MainTabRoute.HomeTab,
+//        defaultIconResId = R.drawable.ic_home_default,
+//        selectIconResId =  R.drawable.ic_home_select,
+//        descriptionResId = R.string.bottom_navigation_bar_item_home,
+        route = MainTabRoute.Home,
     ),
     SHORTS(
-        defaultIconResId = R.drawable.ic_find_suhyeon_default,
-        selectIconResId =  R.drawable.ic_find_suhyeon_select,
-        descriptionResId = R.string.bottom_navigation_bar_item_find_suhyeon,
-        MainTabRoute.ShortsTab
+        MainTabRoute.Shorts
     ),
     LIVE(
-        defaultIconResId = R.drawable.ic_gallery_default,
-        selectIconResId =  R.drawable.ic_gallery_select,
-        descriptionResId = R.string.bottom_navigation_bar_item_gallery,
-        MainTabRoute.LiveTab
+        MainTabRoute.Live
     ),
     SEARCH(
-        defaultIconResId = R.drawable.ic_chat_default,
-        selectIconResId =  R.drawable.ic_chat_select,
-        descriptionResId = R.string.bottom_navigation_bar_item_chat,
-        MainTabRoute.SearchTab
+        MainTabRoute.Search
     ),
     HISTORY(
-        defaultIconResId = R.drawable.ic_my_default,
-        selectIconResId =  R.drawable.ic_my_select,
-        descriptionResId = R.string.bottom_navigation_bar_item_my,
-        MainTabRoute.HistoryTab,
+        MainTabRoute.History,
     );
 
     companion object {

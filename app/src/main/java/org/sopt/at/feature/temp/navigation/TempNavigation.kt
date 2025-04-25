@@ -1,4 +1,5 @@
 package org.sopt.at.feature.temp.navigation
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -23,42 +24,76 @@ fun NavController.navigateToHistory() {
     navigate(MainTabRoute.History)
 }
 
-fun NavGraphBuilder.tempNavgraph(
+fun NavGraphBuilder.shortsNavGraph(
     padding: PaddingValues,
-    navigateToGallery: () -> Unit,
-    navigateToGalleryWithCategory: (String) -> Unit,
-    navigateToPost: (Long) -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToLive: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     composable<MainTabRoute.Shorts> {
-        TempRoute (
+        TempRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToHome = onNavigateToHome,
+            navigateToLive = onNavigateToLive,
+            navigateToSearch = onNavigateToSearch,
+            navigateToHistory = onNavigateToHistory,
         )
     }
+}
+
+fun NavGraphBuilder.liveNavGraph(
+    padding: PaddingValues,
+    onNavigateToHome: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToHistory: () -> Unit,
+    onNavigateToShorts: () -> Unit,
+) {
     composable<MainTabRoute.Live> {
-        TempRoute (
+        TempRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToHome = onNavigateToHome,
+            navigateToSearch = onNavigateToSearch,
+            navigateToHistory = onNavigateToHistory,
+            navigateToShorts = onNavigateToShorts,
         )
     }
+}
+
+
+fun NavGraphBuilder.searchNavGraph(
+    padding: PaddingValues,
+    onNavigateToHome: () -> Unit,
+    onNavigateToLive: () -> Unit,
+    onNavigateToHistory: () -> Unit,
+    onNavigateToShorts: () -> Unit,
+    ) {
     composable<MainTabRoute.Search> {
-        TempRoute (
+        TempRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToHome = onNavigateToHome,
+            navigateToLive = onNavigateToLive,
+            navigateToHistory = onNavigateToHistory,
+            navigateToShorts = onNavigateToShorts,
         )
     }
+}
+
+
+fun NavGraphBuilder.historyNavGraph(
+    padding: PaddingValues,
+    onNavigateToHome: () -> Unit,
+    onNavigateToLive: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToShorts: () -> Unit,
+) {
     composable<MainTabRoute.History> {
-        TempRoute (
+        TempRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToHome = onNavigateToHome,
+            navigateToLive = onNavigateToLive,
+            navigateToSearch = onNavigateToSearch,
+            navigateToShorts = onNavigateToShorts,
         )
     }
 }

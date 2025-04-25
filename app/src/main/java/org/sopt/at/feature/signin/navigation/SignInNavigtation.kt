@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.sopt.at.core.navigation.MainTabRoute
 import org.sopt.at.core.navigation.Route
-import org.sopt.at.feature.home.HomeRoute
+import org.sopt.at.feature.signin.SignInRoute
 
 
 fun NavController.navigateToSignIn() {
@@ -14,18 +14,16 @@ fun NavController.navigateToSignIn() {
 }
 
 
-fun NavGraphBuilder.signInNavgraph(
+fun NavGraphBuilder.signInNavGraph(
     padding: PaddingValues,
-    navigateToGallery: () -> Unit,
-    navigateToGalleryWithCategory: (String) -> Unit,
-    navigateToPost: (Long) -> Unit
+    onNavigateToSignUp: () -> Unit,
+    onNavigateToHome: () -> Unit,
 ) {
     composable<MainTabRoute.Home> {
-        HomeRoute(
+        SignInRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToSignUp = onNavigateToSignUp,
+            navigateToHome = onNavigateToHome,
         )
     }
 }

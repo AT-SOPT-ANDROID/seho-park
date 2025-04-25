@@ -5,27 +5,23 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.sopt.at.core.navigation.MainTabRoute
-import org.sopt.at.feature.home.HomeRoute
+import org.sopt.at.core.navigation.Route
+import org.sopt.at.feature.my.MyRoute
 
 
 fun NavController.navigateToMy() {
-    navigate(MainTabRoute.Home)
+    navigate(Route.My)
 }
 
 
 fun NavGraphBuilder.myNavGraph(
     padding: PaddingValues,
-    onNavigateToBlockUser: () -> Unit,
-    navigateToGallery: () -> Unit,
-    navigateToGalleryWithCategory: (String) -> Unit,
-    navigateToPost: (Long) -> Unit
+    onNavigateToHome: () -> Unit,
 ) {
     composable<MainTabRoute.Home> {
-        HomeRoute(
+        MyRoute(
             padding = padding,
-            navigateToGallery = navigateToGallery,
-            navigateToGalleryWithCategory = navigateToGalleryWithCategory,
-            navigateToPost = navigateToPost,
+            navigateToHome = onNavigateToHome,
         )
     }
 }

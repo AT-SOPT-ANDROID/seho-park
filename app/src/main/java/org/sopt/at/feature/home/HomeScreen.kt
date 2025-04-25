@@ -7,20 +7,22 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeRoute(
     padding: PaddingValues,
-    navigateToGallery: () -> Unit,
-    navigateToGalleryWithCategory: (String) -> Unit,
-    navigateToPost: (Long) -> Unit,
+    navigateToShorts: () -> Unit,
+    navigateToSearch: () -> Unit,
+    navigateToLive: () -> Unit,
+    navigateToHistory: () -> Unit,
+    navigateToMy: () -> Unit,
 ) {
     HomeScreen(
         padding = padding,
-        onPostClick = navigateToPost,
+        onPostClick = navigateToHistory,
     )
 }
 
 fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    onPostClick: (Long) -> Unit,
+    onPostClick: () -> Unit,
 ) {
 
 }

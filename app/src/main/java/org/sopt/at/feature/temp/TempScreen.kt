@@ -8,20 +8,22 @@ import androidx.compose.ui.Modifier
 @Composable
 fun TempRoute(
     padding: PaddingValues,
-    navigateToGallery: () -> Unit,
-    navigateToGalleryWithCategory: (String) -> Unit,
-    navigateToPost: (Long) -> Unit,
+    navigateToHome: () -> Unit = {},
+    navigateToLive: () -> Unit = {},
+    navigateToSearch: () -> Unit = {},
+    navigateToHistory: () -> Unit = {},
+    navigateToShorts: () -> Unit = {},
 ) {
     TempScreen(
         padding = padding,
-        onPostClick = navigateToPost,
+        onPostClick = navigateToHome,
     )
 }
 
 fun TempScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    onPostClick: (Long) -> Unit,
+    onPostClick: () -> Unit,
 ) {
 
 }

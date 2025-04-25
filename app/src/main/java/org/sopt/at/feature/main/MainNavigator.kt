@@ -1,15 +1,19 @@
 package org.sopt.at.feature.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import org.sopt.at.core.navigation.MainTabRoute
 import org.sopt.at.feature.home.navigation.navigateToHome
 import org.sopt.at.feature.home.navigation.navigateToMy
+import org.sopt.at.feature.home.navigation.navigateToSignIn
+import org.sopt.at.feature.home.navigation.navigateToSignUp
 import org.sopt.at.feature.temp.navigation.navigateToHistory
 import org.sopt.at.feature.temp.navigation.navigateToLive
 import org.sopt.at.feature.temp.navigation.navigateToSearch
@@ -72,5 +76,17 @@ class MainNavigator(
     fun navigateToMy() {
         navController.navigateToMy()
     }
+    fun navigateToSignIn() {
+        navController.navigateToSignIn()
+    }
+    fun navigateToSignUp() {
+        navController.navigateToSignUp()
+    }
 }
 
+@Composable
+fun rememberMainNavigator(
+    navController: NavHostController = rememberNavController(),
+): MainNavigator = remember(navController) {
+    MainNavigator(navController)
+}
