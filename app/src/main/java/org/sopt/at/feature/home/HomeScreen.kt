@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.at.core.type.ContentType
 import org.sopt.at.feature.home.components.Banner
 import org.sopt.at.feature.home.components.CommonTabBar
+import org.sopt.at.feature.home.components.ContentsNow
 import org.sopt.at.feature.home.components.HomeTopBar
 import org.sopt.at.feature.home.components.TodayTop20
 import org.sopt.at.ui.theme.BasicWhite
@@ -33,6 +34,7 @@ fun HomeRoute(
 
     HomeScreen(
         padding = padding,
+        navigateToMy = navigateToMy
     )
 }
 
@@ -41,6 +43,7 @@ fun HomeRoute(
 fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
+    navigateToMy: () -> Unit
 ) {
     val viewModel: HomeViewModel = viewModel()
     LazyColumn(
@@ -48,7 +51,9 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            HomeTopBar()
+            HomeTopBar(
+                navigateToMy = navigateToMy
+            )
         }
         stickyHeader {
             CommonTabBar(
@@ -83,11 +88,8 @@ fun HomeScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
-//        item{
-//            Spacer(modifier = Modifier.height(8.dp))
-//            ContentsNow(viewModel.contentsList)
-//        }
         item {
+            ContentsNow(viewModel.contentsList)
             Spacer(modifier = modifier.height(50.dp))
         }
     }

@@ -18,13 +18,13 @@ class HomeViewModel : ViewModel() {
         Top20(3, R.drawable.top1),
         Top20(4, R.drawable.top2),
     )
-//
-//    val contentsList = listOf(
-//        R.drawable.now1,
-//        R.drawable.now2,
-//        R.drawable.now3,
-//        R.drawable.now1,
-//        R.drawable.now1,
-//        R.drawable.now1
-//    )
+
+    val contentsList = listOf(
+        R.drawable.now1,
+        R.drawable.now2,
+        R.drawable.now3,
+        R.drawable.now1,
+        R.drawable.now2,
+        R.drawable.now3,
+    )
 }

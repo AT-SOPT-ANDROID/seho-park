@@ -22,7 +22,9 @@ import org.sopt.at.ui.theme.BasicWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(
+    navigateToMy: () -> Unit
+) {
     TopAppBar(
         title = {
             Icon(
@@ -41,7 +43,7 @@ fun HomeTopBar() {
                     modifier = Modifier.size(28.dp)
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = navigateToMy) {
                 Image(
                     painter = painterResource(R.drawable.profile),
                     contentDescription = "profile",
