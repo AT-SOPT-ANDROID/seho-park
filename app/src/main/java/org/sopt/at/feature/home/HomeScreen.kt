@@ -1,16 +1,19 @@
 package org.sopt.at.feature.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.sopt.at.ui.theme.BasicBlack
-import org.sopt.at.ui.theme.BasicWhite
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.at.core.type.ContentType
+import org.sopt.at.feature.home.components.Banner
+import org.sopt.at.feature.home.components.CommonTabBar
+import org.sopt.at.feature.home.components.HomeTopBar
+
 
 @Composable
 fun HomeRoute(
@@ -21,17 +24,36 @@ fun HomeRoute(
     navigateToHistory: () -> Unit,
     navigateToMy: () -> Unit,
 ) {
+
     HomeScreen(
         padding = padding,
-        onPostClick = navigateToHistory,
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    onPostClick: () -> Unit,
 ) {
-
+    val viewModel: HomeViewModel = viewModel()
+    LazyColumn(
+        modifier = modifier.padding(padding),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            HomeTopBar()
+        }
+        stickyHeader {
+            CommonTabBar(
+                selectedContentType = ContentType.DRAMA,
+                onContentTypeSelected = {}
+            )
+        }
+        item {
+            Banner(
+                banners = viewModel.banners
+            )
+        }
+    }
 }
