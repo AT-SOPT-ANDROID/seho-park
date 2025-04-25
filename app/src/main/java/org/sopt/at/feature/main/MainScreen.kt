@@ -1,11 +1,14 @@
 package org.sopt.at.feature.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -14,6 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toPersistentList
+import org.sopt.at.feature.main.components.MainBottomBar
+import org.sopt.at.ui.theme.BasicBlack
+
 
 @Composable
 fun MainScreen(
@@ -49,16 +56,15 @@ private fun MainScreenContent(
                 )
             )
         },
-//        bottomBar = {
-//            MainBottomBar(
-//                modifier = Modifier.background(colors.White)
-//                    .navigationBarsPadding(),
-//                visible = navigator.shouldShowBottomBar(),
-//                tabs = MainTab.entries.toPersistentList(),
-//                currentTab = navigator.currentTab,
-//                onTabSelected = { navigator.navigate(it) }
-//            )
-//        },
+        bottomBar = {
+            MainBottomBar(
+                modifier = Modifier.background(BasicBlack).navigationBarsPadding(),
+                visible = navigator.shouldShowBottomBar(),
+                tabs = MainTab.entries.toPersistentList(),
+                currentTab = navigator.currentTab,
+                onTabSelected = { navigator.navigate(it) }
+            )
+        },
         snackbarHost = { SnackbarHost(snackBarHostState) }
     )
 }

@@ -4,4 +4,10 @@
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_my_page">MyPageActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="bottom_navigation_bar_item_home">HOME</string>
+    <string name="bottom_navigation_bar_item_shorts">Shorts</string>
+    <string name="bottom_navigation_bar_item_live">LIVE</string>
+    <string name="bottom_navigation_bar_item_search">Search</string>
+    <string name="bottom_navigation_bar_item_history">HISTORY</string>
+
 </resources>

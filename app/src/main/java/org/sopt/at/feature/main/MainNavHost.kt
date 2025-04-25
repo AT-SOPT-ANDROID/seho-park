@@ -30,7 +30,7 @@ fun MainNavHost(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(BasicBlack)
+//            .background(BasicBlack)
     ) {
         NavHost(
             navController = navigator.navController,

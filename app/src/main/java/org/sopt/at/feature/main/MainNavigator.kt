@@ -9,6 +9,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import org.sopt.at.core.navigation.MainTabRoute
 import org.sopt.at.core.navigation.Route
 import org.sopt.at.feature.home.navigation.navigateToHome
 import org.sopt.at.feature.home.navigation.navigateToMy
@@ -26,7 +27,7 @@ class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Route.SignIn
+    val startDestination = MainTabRoute.Home
 
     val currentTab: MainTab?
         @Composable get() = MainTab.entries.find { tab ->
@@ -82,7 +83,23 @@ class MainNavigator(
     fun navigateToSignUp() {
         navController.navigateToSignUp()
     }
+    @Composable
+    fun shouldShowBottomBar(): Boolean {
+        return currentDestination?.route?.let { currentRoute ->
+            MainTab.entries.any { tab ->
+                when (tab.route) {
+                    is MainTabRoute.Home -> currentRoute.startsWith(MainTabRoute.Home::class.qualifiedName!!)
+                    is MainTabRoute.Shorts -> currentRoute.startsWith(MainTabRoute.Shorts::class.qualifiedName!!)
+                    is MainTabRoute.Live -> currentRoute.startsWith(MainTabRoute.Live::class.qualifiedName!!)
+                    is MainTabRoute.Search -> currentRoute.startsWith(MainTabRoute.Search::class.qualifiedName!!)
+                    is MainTabRoute.History -> currentRoute.startsWith(MainTabRoute.History::class.qualifiedName!!)
+                }
+            }
+        } ?: false
+    }
 }
+
+
 
 @Composable
 fun rememberMainNavigator(
