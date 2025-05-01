@@ -13,11 +13,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navigator: MainNavigator = rememberMainNavigator()
             TivingTheme {
-                MainScreen(
-                    navigator = navigator
-                )
+                MainScreen()
             }
         }
     }
