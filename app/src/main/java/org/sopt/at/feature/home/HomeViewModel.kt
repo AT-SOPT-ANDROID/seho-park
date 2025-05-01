@@ -5,8 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.sopt.at.R
+import org.sopt.at.core.model.ContentsItem
 import org.sopt.at.core.model.Top20
-import org.sopt.at.feature.home.model.ContentItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +25,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     )
 
 
-    val contentsList: ImmutableList<ContentItem> = persistentListOf(
-        ContentItem(1, R.drawable.now1),
-        ContentItem(2, R.drawable.now2),
-        ContentItem(3, R.drawable.now3),
-        ContentItem(4, R.drawable.now1),
-        ContentItem(5, R.drawable.now2),
-        ContentItem(6, R.drawable.now3),
+    val contentsList: ImmutableList<ContentsItem> = persistentListOf(
+        ContentsItem(1, R.drawable.now1),
+        ContentsItem(2, R.drawable.now2),
+        ContentsItem(3, R.drawable.now3),
+        ContentsItem(4, R.drawable.now1),
+        ContentsItem(5, R.drawable.now2),
+        ContentsItem(6, R.drawable.now3),
     )
 }

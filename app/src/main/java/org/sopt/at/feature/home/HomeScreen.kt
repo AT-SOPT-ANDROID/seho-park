@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import org.sopt.at.core.model.ContentsItem
 import org.sopt.at.core.model.Top20
 import org.sopt.at.core.type.ContentType
 import org.sopt.at.feature.home.components.Banner
@@ -24,7 +25,6 @@ import org.sopt.at.feature.home.components.CommonTabBar
 import org.sopt.at.feature.home.components.ContentsNow
 import org.sopt.at.feature.home.components.HomeTopBar
 import org.sopt.at.feature.home.components.TodayTop20
-import org.sopt.at.feature.home.model.ContentItem
 import org.sopt.at.ui.theme.BasicWhite
 import org.sopt.at.ui.theme.TivingTheme.typography
 
@@ -56,7 +56,7 @@ private fun HomeScreen(
     navigateToMy: () -> Unit,
     banners: ImmutableList<Int>,
     topList: ImmutableList<Top20>,
-    contentsList: ImmutableList<ContentItem>
+    contentsList: ImmutableList<ContentsItem>
 ) {
     var selectedTab by remember { mutableStateOf(ContentType.DRAMA) }
 

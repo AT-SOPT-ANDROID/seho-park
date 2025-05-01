@@ -15,10 +15,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import org.sopt.at.feature.home.model.ContentItem
+import org.sopt.at.core.model.ContentsItem
 
 @Composable
-fun ContentsNow(contentsList: ImmutableList<ContentItem>) {
+fun ContentsNow(contentsList: ImmutableList<ContentsItem>) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)

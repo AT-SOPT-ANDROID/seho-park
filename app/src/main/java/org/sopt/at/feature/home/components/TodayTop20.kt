@@ -30,7 +30,7 @@ fun TodayTop20(topList: ImmutableList<Top20>) {
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(topList) { topItem ->
+        items(topList, key = {it.rank}) { topItem ->
             Row (
                 horizontalArrangement = Arrangement.spacedBy(0.dp),
                 verticalAlignment = Alignment.Bottom
