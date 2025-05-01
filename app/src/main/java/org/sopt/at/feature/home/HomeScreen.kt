@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,6 +50,8 @@ fun HomeScreen(
     navigateToMy: () -> Unit
 ) {
     val viewModel: HomeViewModel = viewModel()
+    var selectedTab by remember { mutableStateOf(ContentType.DRAMA) }
+
     LazyColumn(
         modifier = modifier.padding(padding),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -57,8 +63,8 @@ fun HomeScreen(
         }
         stickyHeader {
             CommonTabBar(
-                selectedContentType = ContentType.DRAMA,
-                onContentTypeSelected = {}
+                selectedContentType = selectedTab,
+                onContentTypeSelected = { selectedTab = it }
             )
         }
         item {
