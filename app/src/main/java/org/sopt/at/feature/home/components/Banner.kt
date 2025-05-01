@@ -14,10 +14,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 
 
 @Composable
-fun Banner(banners: List<Int>) {
+fun Banner(banners: ImmutableList<Int>) {
 
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),

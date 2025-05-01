@@ -19,11 +19,12 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
 import org.sopt.at.core.model.Top20
 import org.sopt.at.ui.theme.BasicWhite
 
 @Composable
-fun TodayTop20(topList: List<Top20>) {
+fun TodayTop20(topList: ImmutableList<Top20>) {
 
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),

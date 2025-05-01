@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.collections.immutable.ImmutableList
 import org.sopt.at.core.model.Top20
 import org.sopt.at.core.type.ContentType
 import org.sopt.at.feature.home.components.Banner
@@ -52,9 +53,9 @@ private fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
     navigateToMy: () -> Unit,
-    banners: List<Int>,
-    topList: List<Top20>,
-    contentsList: List<Int>
+    banners: ImmutableList<Int>,
+    topList: ImmutableList<Top20>,
+    contentsList: ImmutableList<Int>
 ) {
     var selectedTab by remember { mutableStateOf(ContentType.DRAMA) }
 

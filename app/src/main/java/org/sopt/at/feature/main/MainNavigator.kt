@@ -10,7 +10,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import org.sopt.at.core.navigation.MainTabRoute
-import org.sopt.at.core.navigation.Route
 import org.sopt.at.feature.home.navigation.navigateToHome
 import org.sopt.at.feature.home.navigation.navigateToMy
 import org.sopt.at.feature.home.navigation.navigateToSignIn
