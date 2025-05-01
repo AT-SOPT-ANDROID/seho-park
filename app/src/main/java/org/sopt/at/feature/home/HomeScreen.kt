@@ -15,7 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import org.sopt.at.core.model.Top20
 import org.sopt.at.core.type.ContentType
 import org.sopt.at.feature.home.components.Banner
 import org.sopt.at.feature.home.components.CommonTabBar
@@ -34,27 +35,32 @@ fun HomeRoute(
     navigateToLive: () -> Unit,
     navigateToHistory: () -> Unit,
     navigateToMy: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-
     HomeScreen(
         padding = padding,
-        navigateToMy = navigateToMy
+        navigateToMy = navigateToMy,
+        banners = viewModel.banners,
+        topList = viewModel.topList,
+        contentsList = viewModel.contentsList
     )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(
+private fun HomeScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    navigateToMy: () -> Unit
+    navigateToMy: () -> Unit,
+    banners: List<Int>,
+    topList: List<Top20>,
+    contentsList: List<Int>
 ) {
-    val viewModel: HomeViewModel = viewModel()
     var selectedTab by remember { mutableStateOf(ContentType.DRAMA) }
 
     LazyColumn(
         modifier = modifier.padding(padding),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item {
             HomeTopBar(
@@ -69,7 +75,7 @@ fun HomeScreen(
         }
         item {
             Banner(
-                banners = viewModel.banners
+                banners = banners
             )
         }
         item {
@@ -82,7 +88,7 @@ fun HomeScreen(
             )
         }
         item {
-            TodayTop20(viewModel.topList)
+            TodayTop20(topList)
         }
 
         item {
@@ -95,8 +101,7 @@ fun HomeScreen(
             )
         }
         item {
-            ContentsNow(viewModel.contentsList)
-            Spacer(modifier = modifier.height(50.dp))
+            ContentsNow(contentsList)
         }
     }
 }

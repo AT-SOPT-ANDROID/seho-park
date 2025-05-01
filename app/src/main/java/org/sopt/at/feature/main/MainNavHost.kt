@@ -41,7 +41,7 @@ fun MainNavHost(
                     start = padding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
                     end = padding.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
                     bottom = padding.calculateBottomPadding(),
-                    top = 0.dp
+                    top = 10.dp
                 ),
                 onNavigateToShorts = navigator::navigateToShorts,
                 onNavigateToSearch = navigator::navigateToSearch,

@@ -32,7 +32,7 @@ fun CommonTabBar(
             .horizontalScroll(rememberScrollState())
             .fillMaxWidth()
             .background(BasicBlack)
-            .padding(16.dp),
+            .padding(vertical = 24.dp, horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         ContentType.entries.forEach { contentType ->
@@ -51,7 +51,7 @@ fun CommonTabBar(
 
 @Preview
 @Composable
-fun PreviewCommonTabBar() {
+private fun PreviewCommonTabBar() {
     CommonTabBar(
         selectedContentType = ContentType.DRAMA,
         onContentTypeSelected = {}

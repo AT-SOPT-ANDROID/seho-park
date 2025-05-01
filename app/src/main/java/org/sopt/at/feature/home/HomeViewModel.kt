@@ -1,16 +1,18 @@
 package org.sopt.at.feature.home
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.sopt.at.R
 import org.sopt.at.core.model.Top20
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
 
     val banners = listOf(
         R.drawable.banner1,
         R.drawable.banner1,
     )
-
 
     val topList = listOf(
         Top20(1, R.drawable.top1),
