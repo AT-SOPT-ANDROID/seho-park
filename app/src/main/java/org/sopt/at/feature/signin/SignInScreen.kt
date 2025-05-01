@@ -1,15 +1,10 @@
-package org.sopt.at
+package org.sopt.at.feature.signin
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -41,75 +35,59 @@ import org.sopt.at.components.InputField
 import org.sopt.at.components.LoginButton
 import org.sopt.at.components.Title
 import org.sopt.at.components.TobBar
-import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+import org.sopt.at.ui.theme.BasicBlack
 
-class SignInActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        var loginValue by mutableStateOf("")
-        var passwordValue by mutableStateOf("")
-        var id by mutableStateOf("")
-        var pw by mutableStateOf("")
-        val snackbarHostState = SnackbarHostState()
-
-        val signUpLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val returnedId = result.data?.getStringExtra("id") ?: ""
-                val returnedPw = result.data?.getStringExtra("pw") ?: ""
-                id = returnedId
-                pw = returnedPw
-            }
-        }
-
-        setContent {
-            ATSOPTANDROIDTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = Color.Black,
-                    snackbarHost = { SnackbarHost(snackbarHostState) },
-                ) { innerPadding ->
-                    SignInView(
-                        modifier = Modifier.padding(innerPadding),
-                        loginValue = loginValue,
-                        passwordValue = passwordValue,
-                        onLoginValueChange = { loginValue = it },
-                        onPasswordValueChange = { passwordValue = it },
-                        onSignUpClick = {
-                            signUpLauncher.launch(Intent(this, SignUpActivity::class.java))
-                        },
-                        snackbarHostState = snackbarHostState,
-                        id = id,
-                        pw = pw
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
-fun SignInView(
+fun SignInRoute(
+    padding: PaddingValues,
+    navigateToSignUp: () -> Unit,
+    navigateToHome: () -> Unit
+) {
+    var loginValue by remember { mutableStateOf("") }
+    var passwordValue by remember { mutableStateOf("") }
+
+    // SignUp에서 받아온 값이 있다고 가정 (추후 ViewModel에서 처리 가능)
+    var id by remember { mutableStateOf("") }
+    var pw by remember { mutableStateOf("") }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    SignInScreen(
+        modifier = Modifier,
+        padding = padding,
+        loginValue = loginValue,
+        passwordValue = passwordValue,
+        onLoginValueChange = { loginValue = it },
+        onPasswordValueChange = { passwordValue = it },
+        snackbarHostState = snackbarHostState,
+        onSignUpClick = navigateToSignUp,
+        onLoginSuccess = navigateToHome,
+        id = id,
+        pw = pw
+    )
+}
+@Composable
+fun SignInScreen(
     modifier: Modifier = Modifier,
+    padding: PaddingValues,
     loginValue: String,
     passwordValue: String,
     onLoginValueChange: (String) -> Unit,
     onPasswordValueChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
+    onLoginSuccess: () -> Unit,
     snackbarHostState: SnackbarHostState,
     id: String,
-    pw: String
+    pw: String,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     Column(
         modifier = modifier
-            .background(color = Color.Black)
             .fillMaxSize()
+            .background(BasicBlack)
             .padding(16.dp)
     ) {
         TobBar()
@@ -122,16 +100,13 @@ fun SignInView(
             value = passwordValue,
             onValueChange = onPasswordValueChange,
             placeholder = "비밀번호",
-            isPassword = true,
+            isPassword = true
         )
         Spacer(Modifier.height(24.dp))
         LoginButton(
             onClick = {
                 if (loginValue == id && passwordValue == pw) {
-                    val intent = Intent(context, MyPageActivity::class.java).apply {
-                        putExtra("id", loginValue)
-                    }
-                    context.startActivity(intent)
+                    onLoginSuccess()
                 } else {
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar("아이디 또는 비밀번호가 일치하지 않습니다")

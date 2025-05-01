@@ -1,87 +1,73 @@
-package org.sopt.at
+package org.sopt.at.feature.signup
 
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.at.AuthViewModel
 import org.sopt.at.components.InputField
 import org.sopt.at.components.SignUpButton
 import org.sopt.at.components.Title
 import org.sopt.at.components.TobBar
-import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+import org.sopt.at.ui.theme.BasicBlack
 
-class SignUpActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ATSOPTANDROIDTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = Color.Black,
-                ) { innerPadding ->
-                    SignUpScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = AuthViewModel(),
-                        onNavigateToSignIn = { id, pw ->
-                            val resultIntent = Intent().apply {
-                                putExtra("id", id)
-                                putExtra("pw", pw)
-                            }
-                            setResult(RESULT_OK, resultIntent)
-                            finish()
-                        }
-                    )
-                }
-            }
-        }
-    }
+
+@Composable
+fun SignUpRoute(
+    padding: PaddingValues,
+    navigateToSignIn: (id: String, pw: String) -> Unit
+) {
+    val viewModel: AuthViewModel = viewModel()
+
+    SignUpScreen(
+        padding = padding,
+        modifier = Modifier,
+        viewModel = viewModel,
+        navigateToSignIn = navigateToSignIn
+    )
 }
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier,
+    padding: PaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: AuthViewModel,
-    onNavigateToSignIn: (id: String, pw: String) -> Unit
+    navigateToSignIn: (id: String, pw: String) -> Unit,
 ) {
     val inputId = viewModel.inputId
     val inputPw = viewModel.inputPw
     val isIdValid = viewModel.isIdValid
     val isPwValid = viewModel.isPwValid
     val isPasswdScreen = viewModel.isPasswordScreen
-    val navigateToSignIn by viewModel.navigateToSignIn.collectAsState()
+
     val context = LocalContext.current
 
-    LaunchedEffect(navigateToSignIn) {
-        if (navigateToSignIn) {
-            onNavigateToSignIn(viewModel.inputId, viewModel.inputPw)
-            viewModel.onNavigated()
-        }
-    }
+//    LaunchedEffect(navigateToSignInState) {
+//        if (navigateToSignInState) {
+//            navigateToSignIn(inputId, inputPw)
+//            viewModel.onNavigated()
+//        }
+//    }
+
     Column(
         modifier = modifier
-            .background(color = Color.Black)
+            .background(BasicBlack)
             .fillMaxSize()
-            .padding(top = 16.dp, bottom = 32.dp, start = 16.dp, end = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 32.dp)
     ) {
         TobBar()
         Spacer(modifier = Modifier.height(16.dp))
@@ -96,14 +82,14 @@ fun SignUpScreen(
                 onValueChange = viewModel::onPwChange
             )
         }
-        Spacer(modifier = modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f))
         SignUpButton(
             enabled = if (isPasswdScreen) inputPw.isNotEmpty() else inputId.isNotEmpty(),
             onClick = {
                 if (isPasswdScreen && !isPwValid) {
-                    Toast.makeText(context, "유효하지 않은 패스워드 입니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "유효하지 않은 비밀번호입니다.", Toast.LENGTH_SHORT).show()
                 } else if (!isPasswdScreen && !isIdValid) {
-                    Toast.makeText(context, "유효하지 않은 아이디입니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "유효하지 않은 아이디입니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.onScreenChange()
                 }
@@ -111,7 +97,6 @@ fun SignUpScreen(
         )
     }
 }
-
 
 @Composable
 fun HintText(text: String) {

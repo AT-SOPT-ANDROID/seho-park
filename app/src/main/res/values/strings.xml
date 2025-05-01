@@ -3,4 +3,16 @@
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_my_page">MyPageActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="bottom_navigation_bar_item_home">HOME</string>
+    <string name="bottom_navigation_bar_item_shorts">Shorts</string>
+    <string name="bottom_navigation_bar_item_live">LIVE</string>
+    <string name="bottom_navigation_bar_item_search">Search</string>
+    <string name="bottom_navigation_bar_item_history">HISTORY</string>
+    <string name="type_drama">DRAMA</string>
+    <string name="type_entertainment">ENTERTAINMENT</string>
+    <string name="type_movie">MOVIE</string>
+    <string name="type_sports">SPORTS</string>
+    <string name="type_animation">ANIMATION</string>
+    <string name="type_news">NEWS</string>
 </resources>
