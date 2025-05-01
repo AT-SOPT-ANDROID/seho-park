@@ -61,43 +61,51 @@ class MainNavigator(
             }
         )
     }
+
     fun navigateToShorts() {
         navController.navigateToShorts()
     }
+
     fun navigateToLive() {
         navController.navigateToLive()
     }
+
     fun navigateToSearch() {
         navController.navigateToSearch()
     }
+
     fun navigateToHistory() {
         navController.navigateToHistory()
     }
+
     fun navigateToMy() {
         navController.navigateToMy()
     }
+
     fun navigateToSignIn(userId: String, pw: String) {
         navController.navigateToSignIn()
     }
+
     fun navigateToSignUp() {
         navController.navigateToSignUp()
     }
+
     @Composable
     fun shouldShowBottomBar(): Boolean {
-        return currentDestination?.route?.let { currentRoute ->
-            MainTab.entries.any { tab ->
-                when (tab.route) {
-                    is MainTabRoute.Home -> currentRoute.startsWith(MainTabRoute.Home::class.qualifiedName!!)
-                    is MainTabRoute.Shorts -> currentRoute.startsWith(MainTabRoute.Shorts::class.qualifiedName!!)
-                    is MainTabRoute.Live -> currentRoute.startsWith(MainTabRoute.Live::class.qualifiedName!!)
-                    is MainTabRoute.Search -> currentRoute.startsWith(MainTabRoute.Search::class.qualifiedName!!)
-                    is MainTabRoute.History -> currentRoute.startsWith(MainTabRoute.History::class.qualifiedName!!)
-                }
+        val route = currentDestination?.route ?: return false
+
+        return MainTab.entries.any { tab ->
+            val routeClassName = when (val r = tab.route) {
+                is MainTabRoute.Home,
+                is MainTabRoute.Shorts,
+                is MainTabRoute.Live,
+                is MainTabRoute.Search,
+                is MainTabRoute.History -> r::class.qualifiedName
             }
-        } ?: false
+            routeClassName?.let { route.startsWith(it) } ?: false
+        }
     }
 }
-
 
 
 @Composable
