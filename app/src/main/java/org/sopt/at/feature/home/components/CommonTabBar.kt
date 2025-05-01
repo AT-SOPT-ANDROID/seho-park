@@ -1,5 +1,6 @@
 package org.sopt.at.feature.home.components
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -25,11 +26,12 @@ import org.sopt.at.ui.theme.Gray03
 fun CommonTabBar(
     selectedContentType: ContentType?,
     onContentTypeSelected: (ContentType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState()
 ) {
     Row(
         modifier = modifier
-            .horizontalScroll(rememberScrollState())
+            .horizontalScroll(scrollState)
             .fillMaxWidth()
             .background(BasicBlack)
             .padding(vertical = 24.dp, horizontal = 16.dp),
