@@ -15,16 +15,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import org.sopt.at.feature.home.model.ContentItem
 
 @Composable
-fun ContentsNow(contentsList: ImmutableList<Int>) {
+fun ContentsNow(contentsList: ImmutableList<ContentItem>) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(contentsList) { contentId ->
+        items(contentsList, key = { it.id }) { contents ->
             Image(
-                painter = painterResource(id = contentId),
+                painter = painterResource(id = contents.resId),
                 contentDescription = null,
                 modifier = Modifier
                     .height(150.dp)

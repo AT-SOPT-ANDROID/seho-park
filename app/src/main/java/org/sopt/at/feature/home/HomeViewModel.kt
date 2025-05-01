@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.sopt.at.R
 import org.sopt.at.core.model.Top20
+import org.sopt.at.feature.home.model.ContentItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,12 +24,13 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         Top20(4, R.drawable.top2),
     )
 
-    val contentsList: ImmutableList<Int> = persistentListOf(
-        R.drawable.now1,
-        R.drawable.now2,
-        R.drawable.now3,
-        R.drawable.now1,
-        R.drawable.now2,
-        R.drawable.now3,
+
+    val contentsList: ImmutableList<ContentItem> = persistentListOf(
+        ContentItem(1, R.drawable.now1),
+        ContentItem(2, R.drawable.now2),
+        ContentItem(3, R.drawable.now3),
+        ContentItem(4, R.drawable.now1),
+        ContentItem(5, R.drawable.now2),
+        ContentItem(6, R.drawable.now3),
     )
 }

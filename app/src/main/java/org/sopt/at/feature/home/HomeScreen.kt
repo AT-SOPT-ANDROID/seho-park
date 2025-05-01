@@ -24,6 +24,7 @@ import org.sopt.at.feature.home.components.CommonTabBar
 import org.sopt.at.feature.home.components.ContentsNow
 import org.sopt.at.feature.home.components.HomeTopBar
 import org.sopt.at.feature.home.components.TodayTop20
+import org.sopt.at.feature.home.model.ContentItem
 import org.sopt.at.ui.theme.BasicWhite
 import org.sopt.at.ui.theme.TivingTheme.typography
 
@@ -55,7 +56,7 @@ private fun HomeScreen(
     navigateToMy: () -> Unit,
     banners: ImmutableList<Int>,
     topList: ImmutableList<Top20>,
-    contentsList: ImmutableList<Int>
+    contentsList: ImmutableList<ContentItem>
 ) {
     var selectedTab by remember { mutableStateOf(ContentType.DRAMA) }
 
