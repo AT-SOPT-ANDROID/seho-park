@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.feature.signup
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
