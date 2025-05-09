@@ -16,10 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.sopt.at.components.InputField
-import org.sopt.at.components.SignUpButton
-import org.sopt.at.components.Title
-import org.sopt.at.components.TobBar
+import org.sopt.at.core.components.InputField
+import org.sopt.at.core.components.SignUpButton
+import org.sopt.at.core.components.Title
+import org.sopt.at.core.components.TobBar
 import org.sopt.at.ui.theme.BasicBlack
 
 

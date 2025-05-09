@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.sopt.at.components.Title
-import org.sopt.at.components.TobBar
+import org.sopt.at.core.components.Title
+import org.sopt.at.core.components.TobBar
 
 
 @Composable

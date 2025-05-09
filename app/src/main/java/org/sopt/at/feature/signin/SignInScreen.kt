@@ -31,10 +31,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import org.sopt.at.components.InputField
-import org.sopt.at.components.LoginButton
-import org.sopt.at.components.Title
-import org.sopt.at.components.TobBar
+import org.sopt.at.core.components.InputField
+import org.sopt.at.core.components.LoginButton
+import org.sopt.at.core.components.Title
+import org.sopt.at.core.components.TobBar
 import org.sopt.at.ui.theme.BasicBlack
 
 
