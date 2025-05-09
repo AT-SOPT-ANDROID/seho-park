@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.sopt.at.core.components.InputField
 import org.sopt.at.core.components.SignUpButton
 import org.sopt.at.core.components.Title
@@ -26,15 +29,14 @@ import org.sopt.at.ui.theme.BasicBlack
 @Composable
 fun SignUpRoute(
     padding: PaddingValues,
-    navigateToSignIn: (id: String, pw: String) -> Unit
+    navigateToSignIn: (id: String, pw: String) -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val viewModel: AuthViewModel = viewModel()
-
     SignUpScreen(
         padding = padding,
         modifier = Modifier,
         viewModel = viewModel,
-        navigateToSignIn = navigateToSignIn
+        navigateToSignIn = navigateToSignIn,
     )
 }
 
@@ -42,23 +44,26 @@ fun SignUpRoute(
 fun SignUpScreen(
     padding: PaddingValues,
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel,
+    viewModel: SignUpViewModel,
     navigateToSignIn: (id: String, pw: String) -> Unit,
 ) {
     val inputId = viewModel.inputId
     val inputPw = viewModel.inputPw
+    val inputNickname = viewModel.inputNickname
     val isIdValid = viewModel.isIdValid
     val isPwValid = viewModel.isPwValid
-    val isPasswdScreen = viewModel.isPasswordScreen
+    val screenState = viewModel.screenState
+
+    val shouldNavigate by viewModel.navigateToSignIn.collectAsState()
+
+    LaunchedEffect(shouldNavigate) {
+        if (shouldNavigate) {
+            navigateToSignIn(inputId, inputPw)
+            viewModel.onNavigated()
+        }
+    }
 
     val context = LocalContext.current
-
-//    LaunchedEffect(navigateToSignInState) {
-//        if (navigateToSignInState) {
-//            navigateToSignIn(inputId, inputPw)
-//            viewModel.onNavigated()
-//        }
-//    }
 
     Column(
         modifier = modifier
@@ -68,24 +73,36 @@ fun SignUpScreen(
     ) {
         TobBar()
         Spacer(modifier = Modifier.height(16.dp))
-        if (!isPasswdScreen) {
-            IdView(
-                inputId = inputId,
-                onValueChange = viewModel::onIdChange
-            )
-        } else {
-            PwView(
-                inputPw = inputPw,
-                onValueChange = viewModel::onPwChange
-            )
+        when (screenState) {
+            SignUpViewModel.Screen.ID -> {
+                IdView(
+                    inputId = inputId,
+                    onValueChange = viewModel::onIdChange
+                )
+            }
+
+            SignUpViewModel.Screen.PW -> {
+                PwView(
+                    inputPw = inputPw,
+                    onValueChange = viewModel::onPwChange
+                )
+            }
+
+            else -> {
+                NicknameView(
+                    inputNickname = inputNickname,
+                    onValueChange = viewModel::onNicknameChange
+                )
+            }
         }
+
         Spacer(modifier = Modifier.weight(1f))
         SignUpButton(
-            enabled = if (isPasswdScreen) inputPw.isNotEmpty() else inputId.isNotEmpty(),
+            enabled = if (screenState == SignUpViewModel.Screen.PW) inputPw.isNotEmpty() else inputId.isNotEmpty(),
             onClick = {
-                if (isPasswdScreen && !isPwValid) {
+                if (screenState == SignUpViewModel.Screen.PW && !isPwValid) {
                     Toast.makeText(context, "유효하지 않은 비밀번호입니다.", Toast.LENGTH_SHORT).show()
-                } else if (!isPasswdScreen && !isIdValid) {
+                } else if (screenState != SignUpViewModel.Screen.PW && !isIdValid) {
                     Toast.makeText(context, "유효하지 않은 아이디입니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.onScreenChange()
@@ -135,4 +152,25 @@ fun PwView(modifier: Modifier = Modifier, inputPw: String, onValueChange: (Strin
     )
     Spacer(modifier = modifier.height(8.dp))
     HintText(text = "영문, 숫자, 특수문자(~!@#$$%^&*) 조합 8~15자리")
+}
+
+@Composable
+fun NicknameView(
+    modifier: Modifier = Modifier,
+    inputNickname: String,
+    onValueChange: (String) -> Unit
+) {
+    Title(
+        text = "닉네임을 입력해주세요.",
+        isCenter = true
+    )
+    Spacer(modifier = modifier.height(24.dp))
+    InputField(
+        value = inputNickname,
+        placeholder = "닉네임",
+        onValueChange = onValueChange,
+        isPassword = true
+    )
+    Spacer(modifier = modifier.height(8.dp))
+    HintText(text = "한글/영문/숫자만 사용 가능하며 1자 이상 20자 이하")
 }
