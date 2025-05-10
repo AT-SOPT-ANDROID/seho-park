@@ -82,7 +82,6 @@ class SignUpViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                Log.d(tag, "🔐 SignUp 요청 전송: ID=$inputId, PW=$inputPw, Nickname=$inputNickname")
                 tvingService.postSignUp(
                     SignUpRequest(
                         loginId = inputId,
