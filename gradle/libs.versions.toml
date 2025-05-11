@@ -14,6 +14,9 @@ kotlinxCollectionsImmutable = "0.3.5"
 hilt = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 ksp = "2.0.21-1.0.28"
+retrofit = "2.11.0"
+retrofitKotlinxSerialization = "1.0.0"
+okhttp = "4.12.0"
 
 
 [libraries]
@@ -38,7 +41,9 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-navigation-compose = {group="androidx.hilt", name="hilt-navigation-compose", version.ref = "hilt-navigation-compose"}
-
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

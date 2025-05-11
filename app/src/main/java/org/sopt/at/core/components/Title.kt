@@ -1,4 +1,4 @@
-package org.sopt.at.components
+package org.sopt.at.core.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
