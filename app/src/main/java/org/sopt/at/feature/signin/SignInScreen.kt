@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,7 +24,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.sopt.at.core.components.InputField
 import org.sopt.at.core.components.LoginButton
@@ -42,16 +44,31 @@ import org.sopt.at.ui.theme.BasicBlack
 fun SignInRoute(
     padding: PaddingValues,
     navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     var loginValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
-
-    // SignUp에서 받아온 값이 있다고 가정 (추후 ViewModel에서 처리 가능)
-    var id by remember { mutableStateOf("") }
-    var pw by remember { mutableStateOf("") }
-
+    val loginSuccess by viewModel.loginSuccess.collectAsState()
+    val loginError by viewModel.loginError.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) {
+            navigateToHome()
+            viewModel.clearState()
+        }
+    }
+
+    LaunchedEffect(loginError) {
+        loginError?.let {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(it)
+                viewModel.clearState()
+            }
+        }
+    }
 
     SignInScreen(
         modifier = Modifier,
@@ -62,11 +79,10 @@ fun SignInRoute(
         onPasswordValueChange = { passwordValue = it },
         snackbarHostState = snackbarHostState,
         onSignUpClick = navigateToSignUp,
-        onLoginSuccess = navigateToHome,
-        id = id,
-        pw = pw
+        onLoginClick = { viewModel.postSignIn(loginValue, passwordValue) }
     )
 }
+
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
@@ -76,14 +92,9 @@ fun SignInScreen(
     onLoginValueChange: (String) -> Unit,
     onPasswordValueChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
-    onLoginSuccess: () -> Unit,
     snackbarHostState: SnackbarHostState,
-    id: String,
-    pw: String,
+    onLoginClick: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -104,15 +115,7 @@ fun SignInScreen(
         )
         Spacer(Modifier.height(24.dp))
         LoginButton(
-            onClick = {
-                if (loginValue == id && passwordValue == pw) {
-                    onLoginSuccess()
-                } else {
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar("아이디 또는 비밀번호가 일치하지 않습니다")
-                    }
-                }
-            },
+            onClick = onLoginClick,
             isEnabled = loginValue.isNotEmpty() && passwordValue.isNotEmpty()
         )
         Spacer(Modifier.height(32.dp))
