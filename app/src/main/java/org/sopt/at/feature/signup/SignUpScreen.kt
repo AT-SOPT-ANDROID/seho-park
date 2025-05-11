@@ -169,7 +169,7 @@ fun NicknameView(
         value = inputNickname,
         placeholder = "닉네임",
         onValueChange = onValueChange,
-        isPassword = true
+        isPassword = false
     )
     Spacer(modifier = modifier.height(8.dp))
     HintText(text = "한글/영문/숫자만 사용 가능하며 1자 이상 20자 이하")
